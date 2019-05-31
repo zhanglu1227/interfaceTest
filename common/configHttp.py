@@ -1,34 +1,35 @@
 
-
+# 引用requests库
 import requests
 
-class ConfigHttp(object):
+# 创建ReadHttp类
+class ConfigHttp:
 
-    # 定义get方法
-    def get(self,url,param):
+    # 创建get方法
+    def get(self, url, param):
+        # try不仅捕获异常，而且会恢复执行
         try:
-            print(url,param)
-            response = requests.get(url,params=eval(param))
-            result = response.text
-            # 获取实际结果，进行断言
-            return result
-        except Exception:
-            print('请求错误')
-            return None
-    # 定义post方法
-    def post(self,url,param):
-        try:
-            print(url,param)
-            response = requests.post(url,params=eval(param))
+            response = requests.get(url=url, params=param)
             result = response.text
             return result
-        except Exception:
-            print('请求错误')
+        # Exception常规错误
+        except Exception as msg:
+            print('request error,please check out!')
             return None
 
-    def getRequest(self,url,method,param):
-        if str(method) == 'get':
-            return self.get(url,param)
+    # 创建post方法
+    def post(self, url, param):
+        try:
+            response = requests.post(url=url, data=param)
+            result = response.text
+            return result
+        except Exception as msg:
+            print('request error,please check out!')
+            return None
 
-        elif str(method) == 'post':
-            return self.post(url,param)
+    # 创建一个getrequest方法根据传入参数判断调用哪个方法
+    def getRequest(self, url, method, param):
+        if method == 'get':
+            return self.get(url, param)
+        elif method == 'post':
+            return self.post(url, param)
