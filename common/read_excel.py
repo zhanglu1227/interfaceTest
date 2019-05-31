@@ -7,67 +7,57 @@
 # 6、组装测试数据变为一条正确的匹配的接口测试数据
 # 7、return data给testcase模块
 
-# 导入包
+# 创建公共readExcl类，封装读取testdata包数据的方法
 import xlrd
 
-class readExcel:
+class ReadExcel:
+    # 将打开excel方法实例化为readsheet
+    readsheet = xlrd.open_workbook(r'/Users/cola/Desktop/testcode/interfaceTest/testData/data.xls')
+    # 通过实例化的readsheet变量获取所有sheet页名称
+    sheets = readsheet.sheet_names()
+    # print(sheets) # 调试语句
+    # 创建存放每个sheet页数据的列表
+    urlSheet = []
+    paramSheet = []
+    assertSheet = []
 
-    # 找到并打开excel
-    readbook = xlrd.open_workbook(r'/Users/cola/Desktop/testcode/interfaceTest/testData/data.xls')
-    print(readbook)
-
-    # 获取所有sheet页
-    sheetlist = readbook.sheet_names()
-
-    sheetData = []
-
-    sheetUrl = []
-
-    sheetParam = []
-
-    sheetAssert = []
-
-    # 读取excelsheet页中数据
-
+    # 创建读取excel数据的方法
     def getData(self):
+        for i in self.sheets:
+            # 通过name获取sheet页
+            sheet = self.readsheet.sheet_by_name(i)
 
-        for n in self.sheetlist:
-            print('sheet页名称：', n)
+            # 获取sheet页最大行数
+            nrows = sheet.nrows
+            for j in range(nrows):
+                # 获取行数据
+                sheet_row = sheet.row_values(j)
+                # 如果i是urlSheet页
+                if i == 'urlSheet':
+                    # 添加行数据
+                    self.urlSheet.append(sheet_row)
+                elif i == 'paramSheet':
+                    self.paramSheet.append(sheet_row)
+                elif i == 'assertSheet':
+                    self.assertSheet.append(sheet_row)
 
-            # 读取sheet页数据
-
-            sheet = self.readbook.sheet_by_name(n)
-
-            sheet_nrows = sheet.nrows  # 行
-            sheet_ncols = sheet.ncols  # 列
-
-            # print('************',sheet.ncols,sheet_ncols)
-
-            for i in range(1, sheet_nrows):
-                row_values = sheet.row_values(i)
-                if self.sheetlist.index(n) == 0:
-                    self.sheetUrl.append(row_values)
-                    print(row_values)
-
-                elif self.sheetlist.index(n) == 1:
-                    self.sheetParam.append(row_values)
-                    print(row_values)
-
-                elif self.sheetlist.index(n) == 2:
-                    self.sheetAssert.append(row_values)
-                    print(row_values)
-
-            print('*****', self.sheetUrl,self.sheetParam,self.sheetAssert)
-
+    # 创建一个组装数据的方法
     # 组装数据，将三个列表按照id进行匹配
-    def assembleData(self):
-        data = self.sheetUrl[0] + self.sheetParam[0][1:]
-        print(data)
-        pass
+    # 组装所有的接口请求参数为一个list，一个元素包含：id,url,methode,param,expect
+    def addData(self):
+        # 定义一个空列表用来装获取的数据
+        datalist = []
+        for i in range(1,len(self.urlSheet)):
+            data = self.urlSheet[i] + self.paramSheet[i][1:] + list(self.assertSheet[i][1])
+            datalist.append(data)
+        return datalist
 
+# 防止下面代码运行
+if __name__ == '__main__':
 
+    read = ReadExcel()
+    read.getData()
+    read.addData()
 
-
-read = readExcel()
-read.getData()
-read.assembleData()
+    # 调试
+    # print(read.addData())
