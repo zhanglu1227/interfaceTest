@@ -7,6 +7,7 @@ import sys
 import HTMLTestRunner
 from common.readConfig import ReadConfig
 from common.configEmail import ConfigMyEmail
+from testCase.test_case_ddt import TestCase
 
 
 
@@ -25,7 +26,7 @@ class myTest(unittest.TestCase):
         '''第一步：加载所有的测试用例'''
         # sys.path.append('./testcase')
         # case_path = './testcase'
-        case_path = os.getcwd() + '/' + dir  # 用例文件夹
+        case_path = os.path.dirname() + '/' + dir  # 用例文件夹
         print(case_path)
         # 定义discover方法的参数
         discover = unittest.defaultTestLoader.discover(case_path,

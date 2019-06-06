@@ -17,7 +17,9 @@ class WriteExcel(object):
     # excel_dir = os.getcwd() + '/' + dir
     print('excel_dir', excel_dir)
     # 第一步：读取原excel中的所有数据（复制对象）
-    rb = xlrd.open_workbook(excel_dir + '/' + 'data.xls')
+    excel_path = excel_dir + '/' + 'data.xls'
+    print(excel_path)
+    rb = xlrd.open_workbook(excel_path)
     # 第二步：复制读取的原excel对象
     wb = copy(rb)
     # 第三步：通过get_sheet()获取复制对象的sheet页
