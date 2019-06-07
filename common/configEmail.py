@@ -26,7 +26,7 @@ class ConfigMyEmail():
 
     # 邮件内容
     msg = MIMEText(_text=content,_subtype='plain',_charset='utf-8')
-    msg['sender'] = sender
+    # msg['sender'] = sender
     msg['From'] = sender
     msg['To'] = receiver
     msg['subject'] = Header(subject, 'utf-8')

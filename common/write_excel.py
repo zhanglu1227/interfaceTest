@@ -14,11 +14,12 @@ class WriteExcel(object):
 
     dir = 'testData'
     excel_dir = os.path.dirname(os.getcwd()) + '/' + dir
+    # print(excel_dir)
     # excel_dir = os.getcwd() + '/' + dir
-    print('excel_dir', excel_dir)
+    # print('excel_dir', excel_dir)
     # 第一步：读取原excel中的所有数据（复制对象）
     excel_path = excel_dir + '/' + 'data.xls'
-    print(excel_path)
+    # print(excel_path)
     rb = xlrd.open_workbook(excel_path)
     # 第二步：复制读取的原excel对象
     wb = copy(rb)
@@ -37,7 +38,7 @@ class WriteExcel(object):
             self.ws.write(id, 3, status)
 
             # 第五步：保存excel（具体的excel路径+名称）
-            self.wb.save(self.excel_dir + '/' + 'data.xls')
+            self.wb.save(self.excel_path)
             return 'ok'
 
         except Exception as msg:
